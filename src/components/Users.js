@@ -35,7 +35,7 @@ const Users = () => {
                     <div className=' col-span-1 flex flex-row justify-center items-center pr-2'>
                         <Button variant="contained" color="error"
                             onClick={() => {
-                                dispatch(deleteUser({id: user.id }));
+                                dispatch(deleteUser({ id: user.id }));
                             }}>
                             Delete
                         </Button>
