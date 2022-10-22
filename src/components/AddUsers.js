@@ -23,25 +23,14 @@ const AddUsers = () => {
         const obj = { id: uuidv4(), name:newUser, username :newUsername};
 
         dispatch(addUser(obj));
-
-        return false;
     }
     return (
         <form onSubmit={sumbitForm}
-            className='flex flex-col justify-center items-center p-12 gap-8 w-96 mx-auto border-2 border-blue-500 rounded-3xl mb-20'>
-            <TextField fullWidth id="fullWidth" variant="standard" label='Name' onChange={setName} />
-            <TextField fullWidth id="fullWidth" variant="standard" label='Username' onChange={setUsername} />
+            className='h-72 flex flex-col justify-center items-center p-12 gap-8 w-96 mx-auto border-2 border-blue-500 rounded-3xl mb-20'>
+            <TextField fullWidth id="fullWidth" variant="standard" label='Name' value={newUser} onChange={setName} />
+            <TextField fullWidth id="fullWidth" variant="standard" label='Username'value={newUsername} onChange={setUsername} />
             <Button variant="contained" type='submit' fullWidth>ADD USERS</Button>
         </form>
-        // <div className='flex flex-col justify-center items-center p-12 gap-8 w-96 mx-auto border-2 border-blue-500 rounded-3xl mb-20'>
-        //     <TextField fullWidth id="fullWidth" variant="standard" label='Name' value={newUser} onChange={setName} />
-        //     <TextField fullWidth id="fullWidth" variant="standard" label='Username' value={newUsername} onChange={setUsername} />
-        //     <Button variant="contained" fullWidth
-        //         onClick={() => {
-        //             dispatch(addUser({ id: 0, name: newUser, username: newUsername }));
-        //         }}
-        //     >ADD USERS</Button>
-        // </div>
     )
 }
 
