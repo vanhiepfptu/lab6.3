@@ -8,7 +8,6 @@ const AddUsers = () => {
     const [newUser, setNewUser] = useState("");
     const [newUsername, setNewUsername] = useState("");
     const dispatch = useDispatch();
-
     const setName = (e) => {
         setNewUser(e.target.value);
     }
