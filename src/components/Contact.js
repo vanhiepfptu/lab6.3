@@ -1,17 +1,28 @@
-import { Button, TextField ,Typography} from '@mui/material'
-import React from 'react'
-import {useFormik } from 'formik';
+import { Button, TextField, Typography } from '@mui/material'
+import React, { useState } from 'react'
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { v4 as uuidv4 } from "uuid";
 import "yup-phone";
+// import { addContact } from '../features/contactSlice';
+import { addUser } from '../features/usersSlice';
+import { useDispatch } from 'react-redux';
+import AddUsers from './AddUsers';
+import Users from './Users';
+
 
 const Contact = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const dispatch = useDispatch();
   const formik = useFormik({
-    initialValues:{
+    initialValues: {
       name: '',
-      email:'',
+      email: '',
       phone: ''
     },
-    onSubmit:(values) => {
+    onSubmit: (values) => {
       alert(JSON.stringify(formik.values))
     },
     validationSchema: Yup.object({
@@ -19,53 +30,64 @@ const Contact = () => {
         .min(2, 'Too Short!')
         .max(50, 'Too Long!')
         .required('Required'),
-      email: Yup.string().email(null,'Invalid email').required('Required'),
-      phone: Yup.number().integer().typeError("Please enter a valid number"),
+      email: Yup.string()
+        .email('Invalid email')
+        .required('Required'),
+      phone: Yup.number()
+        .integer('please enter number')
+        .typeError("Please enter a valid number"),
     })
   })
-
-  // const validate = (values, props /* only available when using withFormik */) => {
-  //   const errors = {};
-
-  //   if (!values.email) {
-  //     errors.email = 'Required';
-  //   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-  //     errors.email = 'Invalid email address';
-  //   }
-
-  //   //...
-
-  //   return errors;
-  // };
   return (
-    <form className='mx-auto flex flex-col w-96 gap-3' onSubmit={formik.handleSubmit}>
-      <TextField
-        label='Username'
-        name='name'
-        fullWidth id="fullWidth"
-        value={formik.values.name}
-        onChange={formik.handleChange}
-      >
-      </TextField>
-      {formik.errors.name && (<Typography variant="caption" color="red">{formik.errors.name}</Typography>)}
-      <TextField
-        label='Email'
-        name='email'
-        value={formik.values.email}
-        onChange={formik.handleChange}
-      >
-      </TextField>
-      {formik.errors.email && (<Typography variant="caption" color="red">{formik.errors.email}</Typography>)}
-      <TextField
-        label='Phone'
-        name='phone'
-        value={formik.values.phone}
-        onChange={formik.handleChange}
-      >
-      </TextField>
-      {formik.errors.phone && (<Typography variant="caption" color="red">{formik.errors.phone}</Typography>)}
-      <Button fullWidth variant="contained" className='h-12' type='submit'>add contact</Button>
-    </form>
+    <div className='flex flex-row'>
+      <form className='h-80 flex flex-col justify-center items-center p-12 gap-8 w-96 mx-auto m-auto' onSubmit={formik.handleSubmit}>
+        <TextField
+          label='Username'
+          name='name'
+          variant="standard"
+          fullWidth
+          value={formik.values.name}
+          onChange={formik.handleChange}
+          onChangeCapture={(event) => { setName(event.target.value); }}
+        >
+        </TextField>
+        {formik.errors.name && (<Typography variant="caption" color="red">{formik.errors.name}</Typography>)}
+        <TextField
+          label='Email'
+          name='email'
+          variant="standard"
+          fullWidth
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          onChangeCapture={(event) => { setEmail(event.target.value); }}
+        >
+        </TextField>
+        {formik.errors.email && (<Typography variant="caption" color="red">{formik.errors.email}</Typography>)}
+        <TextField
+          label='Phone'
+          name='phone'
+          variant="standard"
+          fullWidth
+          value={formik.values.phone}
+          onChange={formik.handleChange}
+          onChangeCapture={(event) => { setPhone(event.target.value); }}
+        >
+        </TextField>
+        {formik.errors.phone && (<Typography variant="caption" color="red">{formik.errors.phone}</Typography>)}
+        <Button
+          fullWidth
+          variant="contained"
+          className='h-14'
+          type='submit'
+          onClick={() => {
+            const obj = { id: uuidv4(), name: name, email: email, phone: phone }
+            dispatch(addUser(obj));
+          }}
+        >add contact
+        </Button>
+      </form>
+      <Users></Users>
+    </div>
   )
 }
 
